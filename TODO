@@ -1,0 +1,7 @@
+CircleCI image for maven builds
+Java lint Tool
+Dynamo DB
+S3 Bucket for front-end
+Cloudformation
+ECR for Docker image
+EKS for backend
