@@ -20,9 +20,26 @@ jobs:
           name: Build front-end
           command: |
             cd frontend
+            npm install
+            npm --version
+            npm run build
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
+
+  test-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [frontend-build]
+      - run:
+          name: Test front-end
+          command: |
+            cd frontend
+            npm install
+            npm run test
 
   build-backend:
     docker:
@@ -40,8 +57,10 @@ workflows:
       - maven/test:
           app_src_directory: backend
           executor: java17
-          
+
   default:
     jobs:
       - build-frontend
+      - test-frontend:
+          requires: [build-frontend]
       - build-backend        
