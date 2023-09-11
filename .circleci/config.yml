@@ -33,7 +33,7 @@ workflows:
   maven_test:
     jobs:
       - maven/test:
-          command: '-X verify'
+          app_src_directory: backend
   default:
     jobs:
       - build-frontend
