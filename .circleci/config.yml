@@ -29,8 +29,11 @@ jobs:
           command: |
             cd backend
 
-
 workflows:
+  maven_test:
+    jobs:
+      - maven/test:
+          command: '-X verify'
   default:
     jobs:
       - build-frontend
