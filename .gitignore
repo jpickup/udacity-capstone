@@ -25,5 +25,6 @@ replay_pid*
 
 # keys
 *.pem
+dynamodb-details
 #Excel
 ~$*.xlsx
