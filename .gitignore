@@ -38,3 +38,7 @@ backend/business/src/main/resources/application.yaml
 # VSCode
 .vscode
 
+# Local dynamoDB
+dynamodb_local_latest
+
+.DS_Store

@@ -20,7 +20,7 @@ public class RouteToGpx {
         if (route == null) return null;
 
         Gpx gpx = new Gpx();
-        gpx.setCreator("SHRC");
+        gpx.setCreator("udacity");
         gpx.setVersion("1.1");
         gpx.setMetadata(metaData(route));
         gpx.getTrks().add(trackType(route));
