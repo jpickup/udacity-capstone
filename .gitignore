@@ -32,3 +32,6 @@ dynamodb-details
 # Intellij
 **/.idea
 **/target
+
+# VSCode
+.vscode
