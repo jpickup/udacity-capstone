@@ -26,6 +26,8 @@ replay_pid*
 # keys
 *.pem
 dynamodb-details
+backend/business/src/main/resources/application.yaml
+
 #Excel
 ~$*.xlsx
 
@@ -35,3 +37,4 @@ dynamodb-details
 
 # VSCode
 .vscode
+
