@@ -28,3 +28,7 @@ replay_pid*
 dynamodb-details
 #Excel
 ~$*.xlsx
+
+# Intellij
+**/.idea
+**/target
