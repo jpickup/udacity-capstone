@@ -32,3 +32,4 @@ dynamodb-details
 # Intellij
 **/.idea
 **/target
+backend/business/src/main/resources/application.yaml
