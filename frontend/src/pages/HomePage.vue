@@ -3,7 +3,10 @@
     <div class="home-page">
         <div class="home-page-text">
         <p>
-        Welcome to the Udacity Routes. 
+        Welcome to Udacity Routes, a repository of routes for hiking, running and cycling. 
+        </p>
+        <p>
+        All routes are freely available. Please create an account if you would like to make comments on any of the routes or give them a rating. Let us know if you'd like to contribute new routes.
         </p>
         <!--p>lots more text needed... lots more text needed... lots more text needed... lots more text needed... lots more text needed... </p>
         <p>lots more text needed... lots more text needed... lots more text needed... lots more text needed... lots more text needed... </p>

@@ -1,7 +1,8 @@
 <template>
     <div class="google-login">
         <div v-if="!userDataStore.isLoggedIn" class="google-login-button">
-            <GoogleLogin :callback="callback"/>
+            <!-- TODO put back when issues fixed -->
+            <!--GoogleLogin :callback="callback"/-->
             <!-- <GoogleLogin :callback="callback" prompt auto-login/> -->
         </div>
         <div v-if="userDataStore.isLoggedIn" class="google-user">

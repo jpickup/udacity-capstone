@@ -6,7 +6,7 @@ import RouteCardsPage from '../pages/RouteCardsPage.vue'
 import RouteDetailPage from '../pages/RouteDetailPage.vue'
 import RouteUploadPage from '../pages/RouteUploadPage.vue'
 import PrivacyPage from '../pages/PrivacyPage.vue'
-import TOSPage from '../pages/TOSPage.vue'
+import ContactPage from '../pages/ContactPage.vue'
 import UserAdminPage from '../pages/UserAdminPage.vue'
 import RatingAdminPage from '../pages/RatingAdminPage.vue'
 
@@ -43,9 +43,9 @@ const routes = [
         component: PrivacyPage
     },
     {
-        path: '/TOS',
-        name: 'TOS',
-        component: TOSPage
+        path: '/contact',
+        name: 'contact',
+        component: ContactPage
     },
     {
         path: '/user-admin',

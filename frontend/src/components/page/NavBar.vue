@@ -12,14 +12,11 @@
             </label>
             <ul class="social-icons-list">
                 <li>
-                    <a href="https://www.strava.com/clubs/319179" class="social-link"><i class="fa-brands fa-strava"></i></a>
-                </li>
-                <li>
                     <a href="https://www.instagram.com/surreyhillsrunning/" class="social-link"><i class="fa-brands fa-instagram"></i></a>
                 </li>
             </ul>
             <div class="year">
-                <p>&copy;2023 udacity</p>
+                <p>&copy;2023 Udaroute</p>
             </div>
         </div>
         <!-- end of sidebar -->
@@ -40,16 +37,7 @@
                     <router-link to="/" class="navigation-link" @click="closeMenu">home</router-link>
                 </li>
                 <li class="navigation-item">
-                    <router-link to="/about" class="navigation-link">about our runs</router-link>
-                </li>
-                <li class="navigation-item">
                     <router-link to="/routes" class="navigation-link">routes</router-link>
-                </li>
-                <li class="navigation-item">
-                    <router-link to="/past-events" class="navigation-link">past events</router-link>
-                </li>
-                <li class="navigation-item">
-                    <router-link to="/future-events" class="navigation-link">future events</router-link>
                 </li>
                 <li class="navigation-item">
                     <router-link to="/contact" class="navigation-link">contact</router-link>
@@ -105,7 +93,7 @@ export default {
     },
     methods: {
         closeMenu() {
-            this.menuIsOpen = false;            
+            this.menuIsOpen = false;      
         }
     },
     data() {
@@ -180,12 +168,12 @@ export default {
 }
 
 .social-link:hover {
-    color: #42b983;
+    color: #51bae3;
 }
 
 .year {
     margin-bottom: 1rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: #555;
 }
 /* end of sidebar */
@@ -210,7 +198,7 @@ export default {
     font-size: 2.0rem;
     font-weight: 900;
     letter-spacing: 0.2rem;
-    color: #3ba274;
+    color: #517de3;
     text-align: center;
 }
 
@@ -222,7 +210,7 @@ export default {
     padding: 1rem 2rem;
     background-color: rgba(0,0,0,0.3);
     font-size: 1.5rem;
-    color: #3ca978;
+    color: #517de3;
     letter-spacing: 0.1rem;
     outline: none;
     border: 0.1rem solid #888;
@@ -237,7 +225,7 @@ export default {
 .navigation-search-btn {
     border: none;
     background-color: transparent;
-    color: #236145;
+    color: #0e2459;
     font-size: 1.5rem;
     position: absolute;
     top: 1rem;
@@ -266,7 +254,7 @@ export default {
 }
 
 .navigation-link {
-    color: #3ba274;
+    color: #517de3;
     font-size: 1.6rem; 
     font-weight: 400;
     letter-spacing: 0.1rem;
@@ -279,7 +267,7 @@ export default {
     content: "";
     width: 0rem;
     height: 0.1rem;
-    background-color: #51e3a1;
+    background-color: #517de3;
     position: absolute;
     top: 1rem;
     left: -4rem;
@@ -290,7 +278,7 @@ export default {
     content: "";
     width: 0rem;
     height: 0.1rem;
-    background-color: #51e3a1;
+    background-color: #517de3;
     position: absolute;
     top: 1rem;
     right: -4rem;
@@ -298,7 +286,7 @@ export default {
 }
 
 .navigation-link:hover {
-    color: #51e3a1;
+    color: #517de3;
 }
 
 .navigation-link:hover::before {
