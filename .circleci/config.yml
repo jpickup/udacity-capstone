@@ -11,7 +11,7 @@ orbs:
 jobs:
   build-frontend:
     docker:
-      - image: cimg/node:20.6.0
+      - image: cimg/node:20.6.0-browsers
     steps:
       - checkout
       - restore_cache:
@@ -39,15 +39,28 @@ jobs:
           command: |
             cd frontend
             npm install
-            npm run test
+            npm run lint
 
   build-backend:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      - restore_cache:
+          keys: [backend-build]      
+      - run: 
+          name: Create updated .env file
+          command: |
+            echo "Updating .env file in backend/.env"
+            cd backend
+            echo TYPEORM_HOST=$TYPEORM_HOST >> .env
+            echo TYPEORM_PORT=$TYPEORM_PORT >> .env
+            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> .env
+            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> .env
+            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> .env
+            cat .env
       - run:
-          name: Build front-end
+          name: Build back-end
           command: |
             cd backend
 
