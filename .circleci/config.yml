@@ -22,16 +22,27 @@ jobs:
             cd frontend
             npm --version
             yarn --version
-            # yarn builder build bundle
-            # yarn install
-            # yarn run build
             npm install
             npm run build
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
 
-  test-frontend:
+  scan-frontend:
+    docker:
+      - image: cimg/node:18.16.1
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [frontend-build]
+      - run:
+          name: Scan front-end
+          command: |
+            cd frontend
+            npm install
+            npm audit --audit-level=critical
+
+  lint-frontend:
     docker:
       - image: cimg/node:18.16.1
     steps:
@@ -78,6 +89,8 @@ workflows:
   default:
     jobs:
       - build-frontend
-      - test-frontend:
+      - lint-frontend:
+          requires: [build-frontend]
+      - scan-frontend:
           requires: [build-frontend]
       - build-backend        
