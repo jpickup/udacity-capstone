@@ -80,17 +80,15 @@ jobs:
             cd backend
 
 workflows:
-  maven_test:
+  default:
     jobs:
       - maven/test:
           app_src_directory: backend
           executor: java17
-
-  default:
-    jobs:
       - build-frontend
       - lint-frontend:
           requires: [build-frontend]
       - scan-frontend:
           requires: [build-frontend]
-      - build-backend        
+      - build-backend:
+          requires: [maven/test]
