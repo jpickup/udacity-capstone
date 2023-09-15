@@ -12,6 +12,9 @@
             </label>
             <ul class="social-icons-list">
                 <li>
+                    <a href="https://www.strava.com/athletes/3348955" class="social-link"><i class="fa-brands fa-strava"></i></a>
+                </li>
+                <li>
                     <a href="https://www.instagram.com/surreyhillsrunning/" class="social-link"><i class="fa-brands fa-instagram"></i></a>
                 </li>
             </ul>

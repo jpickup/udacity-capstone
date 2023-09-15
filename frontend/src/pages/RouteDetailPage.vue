@@ -3,7 +3,7 @@
   <page-header title="Route Detail"/>
   <page-body>
     <LoadingSpinner v-if="!route">
-      <p>Please be patient, it can sometimes take up to 20s for the server to wake up if it's not been used in a while.</p>
+      <p>Loading...</p>
     </LoadingSpinner>
     <RouteHeader v-if="route" :route="route" @ratingChanged="ratingChanged"/>
     <RouteFooter v-if="route" :route="route"/>

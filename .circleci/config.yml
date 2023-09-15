@@ -11,7 +11,7 @@ orbs:
 jobs:
   build-frontend:
     docker:
-      - image: cimg/node:20.6.0-browsers
+      - image: cimg/node:18.16.1
     steps:
       - checkout
       - restore_cache:
@@ -21,6 +21,10 @@ jobs:
           command: |
             cd frontend
             npm --version
+            yarn --version
+            # yarn builder build bundle
+            # yarn install
+            # yarn run build
             npm install
             npm run build
       - save_cache:
@@ -29,7 +33,7 @@ jobs:
 
   test-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:18.16.1
     steps:
       - checkout
       - restore_cache:

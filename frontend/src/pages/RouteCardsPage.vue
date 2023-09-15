@@ -1,7 +1,7 @@
 <template>
     <full-page title="Routes">
         <LoadingSpinner v-if="!routes">
-            <p>Please be patient, it can sometimes take up to 20s for the server to wake up if it's not been used in a while</p>
+            <p>Loading...</p>
         </LoadingSpinner>
         <div class="route-cards" v-if="routes"> 
             <div class="route-cards-search">
