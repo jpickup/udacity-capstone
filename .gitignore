@@ -31,6 +31,9 @@ replay_pid*
 *.pem
 dynamodb-details
 backend/business/src/main/resources/application.yaml
+backend/business/src/main/resources/application.properties
+aws/environment-variables
+**/secrets
 
 #Excel
 ~$*.xlsx
@@ -46,3 +49,4 @@ backend/business/src/main/resources/application.yaml
 dynamodb_local_latest
 
 .DS_Store
+

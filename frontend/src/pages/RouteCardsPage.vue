@@ -43,8 +43,8 @@ export default {
         }
     },
     created() {
-      console.log("Querying " + process.env.VUE_APP_ROUTE_SERVER_URI + "/routemeta/");
-      const routesUrl = process.env.VUE_APP_ROUTE_SERVER_URI + '/routemeta/';
+      console.log("Querying " + window.config.VUE_APP_ROUTE_SERVER_URI + "/routemeta/");
+      const routesUrl = window.config.VUE_APP_ROUTE_SERVER_URI + '/routemeta/';
       get(routesUrl)
         .then((response) => { this.routes = response.data; });
     },

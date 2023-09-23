@@ -22,7 +22,7 @@ export default {
     setup() {
         const router = useRouter();
         const deleteRoute = (routeID) => {
-            sendDelete( process.env.VUE_APP_ROUTE_SERVER_URI + '/routes/' + routeID)
+            sendDelete( window.config.VUE_APP_ROUTE_SERVER_URI + '/routes/' + routeID)
             .then(router.replace({name: 'routes'}));                
         }        
         return {

@@ -1,0 +1,33 @@
+# create an EKS cluster
+eksctl create cluster ekscluster-1 --region us-east-1
+
+# create the policy in the AWS UI under IAM (see udaroute-db-policy.json)
+# --> arn:aws:iam::073796236635:policy/udaroute-db-policy
+
+# associate the Open ID Connect identity provider with the EKS cluster  
+eksctl utils associate-iam-oidc-provider --name ekscluster-1 --approve --region us-east-1
+## has warning: Flag --name has been deprecated, use --cluster
+
+
+# create an IAM service account with the IAM Policy attached to the EKS cluster
+eksctl create iamserviceaccount \
+              --name ddb-sa \
+              --cluster ekscluster-1 \
+              --attach-policy-arn arn:aws:iam::073796236635:policy/udaroute-db-policy \
+              --approve \
+              --region us-east-1
+
+kubectl get sa ddb-sa -o yaml
+# Output:
+# apiVersion: v1
+# kind: ServiceAccount
+# metadata:
+#   annotations:
+#     eks.amazonaws.com/role-arn: arn:aws:iam::073796236635:role/eksctl-ekscluster-1-addon-iamserviceaccount-Role1-RLVIYGG3D9YN
+#   creationTimestamp: "2023-09-16T13:44:34Z"
+#   labels:
+#     app.kubernetes.io/managed-by: eksctl
+#   name: ddb-sa
+#   namespace: default
+#   resourceVersion: "2693"
+#   uid: d1dde39d-b69f-4111-93a3-9fc63da791ff              

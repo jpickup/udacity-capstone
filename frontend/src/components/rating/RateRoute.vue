@@ -54,7 +54,7 @@ export default {
             formData.append('comments', this.comments);
             formData.append('userId', this.userDataStore.id);
             console.log(formData);
-            post(process.env.VUE_APP_ROUTE_SERVER_URI + '/ratings',
+            post(window.config.VUE_APP_ROUTE_SERVER_URI + '/ratings',
               formData,
               {
                 headers: {

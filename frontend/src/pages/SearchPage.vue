@@ -28,8 +28,8 @@ export default {
         }
     },
     created() {
-        console.log("Querying " + process.env.VUE_APP_ROUTE_SERVER_URI + "/search/ with " + this.searchText);
-        const routesUrl = process.env.VUE_APP_ROUTE_SERVER_URI + '/search/';
+        console.log("Querying " + window.config.VUE_APP_ROUTE_SERVER_URI + "/search/ with " + this.searchText);
+        const routesUrl = window.config.VUE_APP_ROUTE_SERVER_URI + '/search/';
         let formData = new FormData();
         formData.append('searchText', this.searchText);
         post(routesUrl, formData)

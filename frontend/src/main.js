@@ -8,9 +8,19 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate)
 const app = createApp(App);
-console.log("Server URI: " + process.env.VUE_APP_ROUTE_SERVER_URI)
-console.log("Client ID: " + process.env.VUE_APP_GOOGLE_CLIENT_ID)
 app.use(pinia)
-app.use(vue3GoogleLogin, {
-    clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID
-  }).use(router).mount('#app')
+
+fetch(process.env.BASE_URL + "config.json")
+  .then((response) => response.json())
+  .then((config) => {
+    // either use window.config
+    window.config = config
+    // or use [Vue Global Config][1]
+    app.config.globalProperties.config = config
+    console.log("Server URI: " + window.config.VUE_APP_ROUTE_SERVER_URI)
+    console.log("Client ID: " + window.config.VUE_APP_GOOGLE_CLIENT_ID)
+    // FINALLY, mount the app
+    app.use(vue3GoogleLogin, {
+      clientId: window.config.VUE_APP_GOOGLE_CLIENT_ID
+    }).use(router).mount('#app')
+  })

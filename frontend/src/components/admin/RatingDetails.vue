@@ -25,7 +25,7 @@ export default {
             if (confirm("Delete rating?")) {
                 console.log("Deleting rating " + this.rating.id)
 
-                sendDelete(process.env.VUE_APP_ROUTE_SERVER_URI + "/ratings/"+this.rating.id)
+                sendDelete(window.config.VUE_APP_ROUTE_SERVER_URI + "/ratings/"+this.rating.id)
 
                 this.$emit('delete', this.rating.id)
             }

@@ -20,8 +20,8 @@ export default {
     },
     setup() {
         const updateRoute = (routeId, routeName, routeDescription) => {
-            console.log(process.env.VUE_APP_ROUTE_SERVER_URI + '/routemeta/' + routeId)
-            put( process.env.VUE_APP_ROUTE_SERVER_URI + '/routemeta/' + routeId, {
+            console.log(window.config.VUE_APP_ROUTE_SERVER_URI + '/routemeta/' + routeId)
+            put( window.config.VUE_APP_ROUTE_SERVER_URI + '/routemeta/' + routeId, {
                 "id": routeId,
                 "name": routeName,
                 "description": routeDescription

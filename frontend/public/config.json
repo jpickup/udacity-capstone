@@ -1,0 +1,5 @@
+{
+    "VUE_APP_ROUTE_SERVER_URI": "http://a8d78c552fd074d93b705642ada85710-291816909.us-east-1.elb.amazonaws.com:8081",
+    "VUE_APP_GOOGLE_CLIENT_ID": "",
+    "VUE_APP_MAPTILER_KEY": "BKeMnHghuVDleiQjf1sU"    
+}

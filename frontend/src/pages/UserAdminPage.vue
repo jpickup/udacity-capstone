@@ -24,8 +24,8 @@ export default {
         }
     },
     created() {
-      console.log("Querying " + process.env.VUE_APP_ROUTE_SERVER_URI + "/users/");
-      const usersUrl = process.env.VUE_APP_ROUTE_SERVER_URI + '/users/';
+      console.log("Querying " + window.config.VUE_APP_ROUTE_SERVER_URI + "/users/");
+      const usersUrl = window.config.VUE_APP_ROUTE_SERVER_URI + '/users/';
       axios.get(usersUrl)
         .then((response) => { this.users = response.data; });
     },

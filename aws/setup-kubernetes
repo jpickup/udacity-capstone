@@ -1,0 +1,72 @@
+
+# Setup push commands
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 073796236635.dkr.ecr.us-east-1.amazonaws.com
+
+# push works with the following (inside backend deployment)
+docker build --tag=udaroute .
+ecrpath=073796236635.dkr.ecr.us-east-1.amazonaws.com/udaroute:latest
+echo "ERC ID and Image: $ecrpath"
+docker tag udaroute:latest $ecrpath
+docker push $ecrpath
+
+
+https://aws.amazon.com/tutorials/deploy-webapp-eks/module-one/
+
+
+# create a kubernetes cluster
+eksctl create cluster \
+--name udaroute \
+--region us-east-1 \
+--nodegroup-name udaroute-nodes \
+--node-type t2.micro \
+--nodes 2
+
+# this automatically updates a local config file so that kubectl talks to this cluster
+
+# create a pod with an image
+kubectl create deployment udaroute-deployment --image=073796236635.dkr.ecr.us-east-1.amazonaws.com/udaroute:latest
+
+# show pods (gets the full name with hash)
+kubectl get pod
+
+# show/edit the pod config (shows yaml in vi)
+kubectl edit deployment udaroute-deployment
+
+# export the deployment config in yaml format:
+kubectl get deployment udaroute-deployment -o yaml
+
+# show logs
+kubectl logs udaroute-deployment-5b86776fc6-pm7n7
+
+# interactive terminal 
+kubectl exec -it udaroute-deployment-5b86776fc6-pm7n7 -- bin/bash
+
+
+# Need to create both a deployment and a service - this is a different yaml file
+# actually, don't do this, use the expose instead (below)
+kubectl apply -f ../aws/udaroute-k8s-service.yaml
+
+
+
+# Using this resource seems to make it easy: https://kubernetes.io/docs/tutorials/stateless-application/expose-external-ip-address/
+kubectl apply -f udaroute-deployment.yaml
+kubectl expose deployment udaroute-deployment --type=LoadBalancer --name=udaroute-service
+# or...
+kubectl expose deployment udaroute-deployment --type=LoadBalancer --name=udaroute-service --port=8081
+kubectl get services udaroute-service
+
+# get the public IP:
+kubectl get services udaroute-service -o jsonpath="{.status.loadBalancer.ingress[0].hostname}"
+
+#gives something like: a4213bc162aa246f1b1995cd81609234-1948659327.us-east-1.elb.amazonaws.com
+export LOAD_BALANCER_IP="$(kubectl get services udaroute-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+export VUE_APP_ROUTE_SERVER_URI=http://${LOAD_BALANCER_IP}:8081
+# this is what we need to inject into the S3 bucket
+
+
+
+# delete deployment
+kubectl delete deployment udaroute-deployment
+
+# to delete
+eksctl delete cluster --name xxxxx

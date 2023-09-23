@@ -44,7 +44,7 @@ export default {
             }
             const headers= {};
             headers.Authorization = 'Bearer ' + userCredential;
-            axios.post(process.env.VUE_APP_ROUTE_SERVER_URI + '/login', loginCredentials, {headers})
+            axios.post(window.config.VUE_APP_ROUTE_SERVER_URI + '/login', loginCredentials, {headers})
             .then((response) => {
                 console.log("Logged in as " + response.data.id + " with role " + response.data.role);
                 this.userDataStore.login(response.data.id, decodedCredential, userCredential, response.data.role, decodedCredential.email)

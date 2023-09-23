@@ -67,7 +67,7 @@ export default {
             formData.append('description', this.description);
             formData.append('visibility', this.visibility)
             console.log(formData);
-            post( process.env.VUE_APP_ROUTE_SERVER_URI + '/gpx/upload',
+            post( window.config.VUE_APP_ROUTE_SERVER_URI + '/gpx/upload',
               formData,
               {
                 headers: {

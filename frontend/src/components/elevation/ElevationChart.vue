@@ -66,7 +66,7 @@
       }
     },
     created() {
-      const routeUrl = process.env.VUE_APP_ROUTE_SERVER_URI + '/elevation/'+this.routeId;
+      const routeUrl = window.config.VUE_APP_ROUTE_SERVER_URI + '/elevation/'+this.routeId;
       get(routeUrl)
         .then((response) => { 
             this.elevationJson = response.data; 

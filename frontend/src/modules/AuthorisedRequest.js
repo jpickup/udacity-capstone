@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useUserDataStore } from '@/stores/UserData.js';
 
 function get(url, ...args) {
+    console.log(url);
     const userDataStore = useUserDataStore()
     const headers= {};
     if (userDataStore.isLoggedIn) {

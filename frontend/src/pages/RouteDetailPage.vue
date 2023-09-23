@@ -51,8 +51,8 @@
     },
     methods: {
       loadRoute() {
-        console.log("Querying " + process.env.VUE_APP_ROUTE_SERVER_URI + "/routemeta/" + this.routeId);
-      const routesUrl = process.env.VUE_APP_ROUTE_SERVER_URI + '/routemeta/' + this.routeId;
+        console.log("Querying " + window.config.VUE_APP_ROUTE_SERVER_URI + "/routemeta/" + this.routeId);
+      const routesUrl = window.config.VUE_APP_ROUTE_SERVER_URI + '/routemeta/' + this.routeId;
       get(routesUrl)
         .then((response) => { this.route = response.data; });
       },

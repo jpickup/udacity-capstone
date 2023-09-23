@@ -29,7 +29,7 @@ export default {
     },
     data() {
         return {
-            baseUrl: process.env.VUE_APP_ROUTE_SERVER_URI + "/geojson/"
+            baseUrl: window.config.VUE_APP_ROUTE_SERVER_URI + "/geojson/"
         }
     }
 

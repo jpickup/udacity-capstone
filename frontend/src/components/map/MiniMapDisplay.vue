@@ -36,8 +36,8 @@
     },
     data() {
       return {
-        mapTilerKey: process.env.VUE_APP_MAPTILER_KEY,
-        mapTilerUrl: "https://api.maptiler.com/maps/topo-v2/style.json?key="+process.env.VUE_APP_MAPTILER_KEY,
+        mapTilerKey: window.config.VUE_APP_MAPTILER_KEY,
+        mapTilerUrl: "https://api.maptiler.com/maps/topo-v2/style.json?key="+window.config.VUE_APP_MAPTILER_KEY,
         centre: null,
         zoom: 2,
         route: null,
@@ -58,8 +58,8 @@
     },
     created() {
 
-      const routeUrl = process.env.VUE_APP_ROUTE_SERVER_URI + '/routes/'+this.mapId;
-      const jsonUrl = process.env.VUE_APP_ROUTE_SERVER_URI + '/geojson/'+this.mapId;
+      const routeUrl = window.config.VUE_APP_ROUTE_SERVER_URI + '/routes/'+this.mapId;
+      const jsonUrl = window.config.VUE_APP_ROUTE_SERVER_URI + '/geojson/'+this.mapId;
       get(jsonUrl).then((response) => { this.geoJson = response.data; });
       get(routeUrl).then((response) => { this.route = response.data; console.log(this.route.centre); });
     },

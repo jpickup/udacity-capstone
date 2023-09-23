@@ -33,7 +33,7 @@ export default {
                     role: this.userRole
                 }
                 console.log("Updating user " + this.user.id + " with " + userData)
-                post(process.env.VUE_APP_ROUTE_SERVER_URI + "/users/"+this.user.id, userData)
+                post(window.config.VUE_APP_ROUTE_SERVER_URI + "/users/"+this.user.id, userData)
 
                 this.$emit('change', this.user.id)
             }
@@ -42,7 +42,7 @@ export default {
             if (confirm("Delete user?")) {
                 console.log("Deleting user " + this.user.id)
 
-                sendDelete(process.env.VUE_APP_ROUTE_SERVER_URI + "/users/"+this.user.id)
+                sendDelete(window.config.VUE_APP_ROUTE_SERVER_URI + "/users/"+this.user.id)
 
                 this.$emit('delete', this.user.id)
             }

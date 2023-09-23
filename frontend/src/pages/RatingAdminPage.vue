@@ -24,8 +24,8 @@ export default {
         }
     },
     created() {
-      console.log("Querying " + process.env.VUE_APP_ROUTE_SERVER_URI + "/ratings/");
-      const ratingsUrl = process.env.VUE_APP_ROUTE_SERVER_URI + '/ratings/';
+      console.log("Querying " + window.config.VUE_APP_ROUTE_SERVER_URI + "/ratings/");
+      const ratingsUrl = window.config.VUE_APP_ROUTE_SERVER_URI + '/ratings/';
       axios.get(ratingsUrl)
         .then((response) => { this.ratings = response.data; });
     },

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-# Step 1:
+# Create a docker image
 docker build --tag=udaroute .
 
-# Step 2: 
+# Check it's present
 docker image ls
 
-# Step 3: 
+# Run it
 docker run -p 8081:8081 udaroute
