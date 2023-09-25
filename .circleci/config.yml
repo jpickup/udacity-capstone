@@ -91,10 +91,10 @@ jobs:
             mkdir docker
             cat application.properties
             mvn clean test install
-            ls -l docker
+            ls -l business/docker
       - save_cache:
           paths: 
-            - backend/docker
+            - backend/business/docker
           key: backend-build
    
   upload-docker-image:
