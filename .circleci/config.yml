@@ -102,6 +102,8 @@ jobs:
       - image: docker:17.05.0-ce-git
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 20.10.14
       - restore_cache:
           keys: [backend-build]      
       - run:
