@@ -86,8 +86,10 @@ Resources:
         MaxSize: 2
         MinSize: 2
       Subnets:
-        - subnet-0e62434ceaabf1a6d
-        - subnet-01d2f09d1c0ced3e5
+#        - subnet-0e62434ceaabf1a6d
+#        - subnet-01d2f09d1c0ced3e5
+        - udaroute-eks-cluster/SubnetPrivateUSEAST1C
+        - udaroute-eks-cluster/SubnetPrivateUSEAST1F
       Tags:
         alpha.eksctl.io/nodegroup-name: udaroute-nodes
         alpha.eksctl.io/nodegroup-type: managed
