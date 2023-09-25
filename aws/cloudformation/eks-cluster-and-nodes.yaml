@@ -289,65 +289,6 @@ Resources:
     Properties:
       InternetGatewayId: !Ref InternetGateway
       VpcId: !Ref VPC
-Outputs:
-  ARN:
-    Value: !GetAtt 
-      - ControlPlane
-      - Arn
-    Export:
-      Name: !Sub '${AWS::StackName}::ARN'
-  CertificateAuthorityData:
-    Value: !GetAtt 
-      - ControlPlane
-      - CertificateAuthorityData
-  ClusterSecurityGroupId:
-    Value: !GetAtt 
-      - ControlPlane
-      - ClusterSecurityGroupId
-    Export:
-      Name: !Sub '${AWS::StackName}::ClusterSecurityGroupId'
-  ClusterStackName:
-    Value: !Ref 'AWS::StackName'
-  Endpoint:
-    Value: !GetAtt 
-      - ControlPlane
-      - Endpoint
-    Export:
-      Name: !Sub '${AWS::StackName}::Endpoint'
-  FeatureNATMode:
-    Value: Single
-  SecurityGroup:
-    Value: !Ref ControlPlaneSecurityGroup
-    Export:
-      Name: !Sub '${AWS::StackName}::SecurityGroup'
-  ServiceRoleARN:
-    Value: !GetAtt 
-      - ServiceRole
-      - Arn
-    Export:
-      Name: !Sub '${AWS::StackName}::ServiceRoleARN'
-  SharedNodeSecurityGroup:
-    Value: !Ref ClusterSharedNodeSecurityGroup
-    Export:
-      Name: !Sub '${AWS::StackName}::SharedNodeSecurityGroup'
-  SubnetsPrivate:
-    Value: !Join 
-      - ','
-      - - !Ref SubnetPrivateUSEAST1F
-        - !Ref SubnetPrivateUSEAST1C
-    Export:
-      Name: !Sub '${AWS::StackName}::SubnetsPrivate'
-  SubnetsPublic:
-    Value: !Join 
-      - ','
-      - - !Ref SubnetPublicUSEAST1F
-        - !Ref SubnetPublicUSEAST1C
-    Export:
-      Name: !Sub '${AWS::StackName}::SubnetsPublic'
-  VPC:
-    Value: !Ref VPC
-    Export:
-      Name: !Sub '${AWS::StackName}::VPC'
 # -- nodes
   LaunchTemplate:
     Type: 'AWS::EC2::LaunchTemplate'
@@ -442,3 +383,62 @@ Outputs:
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}/NodeInstanceRole'
+Outputs:
+  ARN:
+    Value: !GetAtt 
+      - ControlPlane
+      - Arn
+    Export:
+      Name: !Sub '${AWS::StackName}::ARN'
+  CertificateAuthorityData:
+    Value: !GetAtt 
+      - ControlPlane
+      - CertificateAuthorityData
+  ClusterSecurityGroupId:
+    Value: !GetAtt 
+      - ControlPlane
+      - ClusterSecurityGroupId
+    Export:
+      Name: !Sub '${AWS::StackName}::ClusterSecurityGroupId'
+  ClusterStackName:
+    Value: !Ref 'AWS::StackName'
+  Endpoint:
+    Value: !GetAtt 
+      - ControlPlane
+      - Endpoint
+    Export:
+      Name: !Sub '${AWS::StackName}::Endpoint'
+  FeatureNATMode:
+    Value: Single
+  SecurityGroup:
+    Value: !Ref ControlPlaneSecurityGroup
+    Export:
+      Name: !Sub '${AWS::StackName}::SecurityGroup'
+  ServiceRoleARN:
+    Value: !GetAtt 
+      - ServiceRole
+      - Arn
+    Export:
+      Name: !Sub '${AWS::StackName}::ServiceRoleARN'
+  SharedNodeSecurityGroup:
+    Value: !Ref ClusterSharedNodeSecurityGroup
+    Export:
+      Name: !Sub '${AWS::StackName}::SharedNodeSecurityGroup'
+  SubnetsPrivate:
+    Value: !Join 
+      - ','
+      - - !Ref SubnetPrivateUSEAST1F
+        - !Ref SubnetPrivateUSEAST1C
+    Export:
+      Name: !Sub '${AWS::StackName}::SubnetsPrivate'
+  SubnetsPublic:
+    Value: !Join 
+      - ','
+      - - !Ref SubnetPublicUSEAST1F
+        - !Ref SubnetPublicUSEAST1C
+    Export:
+      Name: !Sub '${AWS::StackName}::SubnetsPublic'
+  VPC:
+    Value: !Ref VPC
+    Export:
+      Name: !Sub '${AWS::StackName}::VPC'
