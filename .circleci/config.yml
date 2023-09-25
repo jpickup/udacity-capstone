@@ -21,9 +21,9 @@ commands:
           when: on_fail
           command: |
             echo "Destroying udaroute EKS cluster nodes: udaroute-eks-nodes"
-            aws cloudformation delete-stack --stack-name udaroute-eks-nodes
+            #aws cloudformation delete-stack --stack-name udaroute-eks-nodes
             echo "Destroying udaroute EKS cluster stack: udaroute-eks-cluster"
-            aws cloudformation delete-stack --stack-name udaroute-eks-cluster
+            #aws cloudformation delete-stack --stack-name udaroute-eks-cluster
 
 jobs:
   build-frontend:
@@ -102,7 +102,7 @@ jobs:
       - restore_cache:
            keys: [backend-build]      
       - run:
-          name: Test
+          name: Compile and Test
           command: |
             cd backend
             mkdir docker
@@ -125,6 +125,16 @@ jobs:
             docker tag udaroute:latest $ecrpath
             docker push $ecrpath
 
+  lint-backend:
+    executor: java17
+    steps:
+      - checkout
+      - run:
+          name: Checkstyle
+          command: |
+            cd backend
+            mvn checkstyle:checkstyle
+
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
@@ -145,6 +155,7 @@ jobs:
             aws cloudformation deploy \
               --template-file aws/cloudformation/eks-nodes.yaml \
               --tags project=udaroute \
+              --capabilities CAPABILITY_NAMED_IAM \
               --stack-name udaroute-eks-nodes
       # Destroy environment on failure
       - destroy-environment:
@@ -156,6 +167,8 @@ workflows:
       - setup-backend
       - build-backend:
           requires: [setup-backend]
+      - lint-backend:
+          requires: [build-backend]
       - build-frontend
       - lint-frontend:
           requires: [build-frontend]
