@@ -70,3 +70,7 @@ kubectl delete deployment udaroute-deployment
 
 # to delete
 eksctl delete cluster --name xxxxx
+
+
+# setup kubectl to work with cloudformation EKS
+aws eks update-kubeconfig --region us-east-1 --name udaroute
