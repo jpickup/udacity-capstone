@@ -17,5 +17,6 @@ spec:
       containers:
       - image: 073796236635.dkr.ecr.us-east-1.amazonaws.com/udaroute:latest
         name: udaroute-deployment
+        imagePullPolicy: "Always"
         ports:
         - containerPort: 8081
