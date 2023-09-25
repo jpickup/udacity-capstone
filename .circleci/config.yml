@@ -79,7 +79,6 @@ jobs:
 
   build-backend:
     executor: java17
-    working_directory: ~/backend
     steps:
       - checkout
       - restore_cache:
@@ -87,6 +86,7 @@ jobs:
       - run:
           name: Test
           command: |
+            cd backend
             cat application.properties
             mvn clean test install
       - save_cache:
