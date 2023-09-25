@@ -22,8 +22,8 @@ commands:
           command: |
             echo "Destroying udaroute EKS cluster nodes: udaroute-eks-nodes-<<parameters.workflowId>>
             aws cloudformation delete-stack --stack-name udaroute-eks-nodes-<<parameters.workflowId>>
-            echo "Destroying udaroute EKS cluster stack: udaroute-eks-cluster--<<parameters.workflowId>>
-            aws cloudformation delete-stack --stack-name udaroute-eks-cluster--<<parameters.workflowId>>
+            echo "Destroying udaroute EKS cluster stack: udaroute-eks-cluster-<<parameters.workflowId>>
+            aws cloudformation delete-stack --stack-name udaroute-eks-cluster-<<parameters.workflowId>>
 
 
 jobs:
@@ -136,7 +136,7 @@ jobs:
           name: Setup Kubernetes Cluster
           command: |
             aws cloudformation deploy \
-              --template-file aws/cloudformation/eks-cluster.yml \
+              --template-file aws/cloudformation/eks-cluster.yaml \
               --tags project=udaroute \
               --stack-name udaroute-eks-cluster-${CIRCLE_WORKFLOW_ID:0:7} \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
@@ -144,7 +144,7 @@ jobs:
           name: Setup Kubernetes Nodes
           command: |
             aws cloudformation deploy \
-              --template-file aws/cloudformation/eks-nodes.yml \
+              --template-file aws/cloudformation/eks-nodes.yaml \
               --tags project=udaroute \
               --stack-name udaroute-eks-nodes-${CIRCLE_WORKFLOW_ID:0:7} \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
