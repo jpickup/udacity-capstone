@@ -7,6 +7,7 @@ executors:
 
 orbs:
   maven: circleci/maven@1.4.1
+  docker: circleci/docker@2.2.0
 
 jobs:
   build-frontend:
@@ -56,39 +57,97 @@ jobs:
             npm install
             npm run lint
 
-  build-backend:
+  setup-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/openjdk:17.0
     steps:
       - checkout
       - restore_cache:
           keys: [backend-build]      
       - run: 
-          name: Create updated .env file
+          name: Create updated application.properties file
           command: |
-            echo "Updating .env file in backend/.env"
+            echo "Updating application.properties file in backend/application.properties"
             cd backend
-            echo TYPEORM_HOST=$TYPEORM_HOST >> .env
-            echo TYPEORM_PORT=$TYPEORM_PORT >> .env
-            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> .env
-            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> .env
-            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> .env
-            cat .env
+            echo amazon.dynamodb.endpoint=$amazon_dynamodb_endpoint > application.properties
+            echo amazon.aws.accesskey=$amazon_aws_accesskey >> application.properties
+            echo amazon.aws.secretkey=$amazon_aws_secretkey >> application.properties
+            cat application.properties
+      - save_cache:
+          paths: [backend/application.properties]
+          key: backend-build
+
+  build-backend:
+    executor: java17
+    working_directory: ~/backend
+    steps:
+      - restore_cache:
+           keys: [backend-build]      
       - run:
-          name: Build back-end
+          name: Test
+          command: |
+            mvn clean test install
+      - save_cache:
+          paths: 
+            - ~/backend/docker
+          key: backend-build
+  
+  get-ecr-password:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [backend-build]      
+      - run:
+          name: Get ECR login from AWS
           command: |
             cd backend
+            aws ecr get-login-password --region us-east-1 > ~/backend/ecr.password
+      - save_cache:
+          paths: 
+            - ~/backend/ecr.password
+          key: backend-build
+  
+  upload-docker-image:
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [backend-build]      
+      - run:
+          name: Build docker image
+          command: |
+            cd backend
+            docker build --tag=udaroute .
+      - run:
+          name: Upload docker image to ECR
+          command: |
+            cd backend
+            echo ~/backend/ecr.password | docker login --username AWS --password-stdin $ecr_home
+            ecrpath=$ecr_home/udaroute:latest
+            echo "ERC ID and Image: $ecrpath"
+            docker tag udaroute:latest $ecrpath
+            docker push $ecrpath
+
 
 workflows:
   default:
     jobs:
-      - maven/test:
-          app_src_directory: backend
-          executor: java17
+      - setup-backend
+      - get-ecr-password
+      - build-backend:
+          requires: [setup-backend]
+      # - maven/test:
+      #     command: clean install
+      #     app_src_directory: backend
+      #     executor: java17
+      #     requires: [setup-backend]
+      - upload-docker-image:
+          requires: [build-backend,get-ecr-password]
       - build-frontend
       - lint-frontend:
           requires: [build-frontend]
       - scan-frontend:
           requires: [build-frontend]
-      - build-backend:
-          requires: [maven/test]
