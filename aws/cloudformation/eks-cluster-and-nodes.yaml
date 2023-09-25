@@ -305,7 +305,7 @@ Resources:
           HttpPutResponseHopLimit: 2
           HttpTokens: required
         SecurityGroupIds:
-          - !Ref ClusterSecurityGroupId'
+          - !Ref ControlPlaneSecurityGroup
         TagSpecifications:
           - ResourceType: instance
             Tags:
