@@ -87,6 +87,7 @@ jobs:
           name: Test
           command: |
             cd backend
+            cp ~/backend/application.properties .
             cat application.properties
             mvn clean test install
       - save_cache:
