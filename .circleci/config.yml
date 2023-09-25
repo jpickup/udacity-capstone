@@ -81,34 +81,20 @@ jobs:
     executor: java17
     working_directory: ~/backend
     steps:
+      - checkout
       - restore_cache:
            keys: [backend-build]      
       - run:
           name: Test
           command: |
+            cat application.properties
             mvn clean test install
       - save_cache:
           paths: 
             - ~/backend/docker
           key: backend-build
   
-  get-ecr-password:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - restore_cache:
-          keys: [backend-build]      
-      - run:
-          name: Get ECR login from AWS
-          command: |
-            cd backend
-            aws ecr get-login-password --region us-east-1 > ~/backend/ecr.password
-      - save_cache:
-          paths: 
-            - ~/backend/ecr.password
-          key: backend-build
-  
+ 
   upload-docker-image:
     docker:
       - image: docker:17.05.0-ce-git
@@ -125,7 +111,7 @@ jobs:
           name: Upload docker image to ECR
           command: |
             cd backend
-            echo ~/backend/ecr.password | docker login --username AWS --password-stdin $ecr_home
+            echo $ecr_password | docker login --username AWS --password-stdin $ecr_home
             ecrpath=$ecr_home/udaroute:latest
             echo "ERC ID and Image: $ecrpath"
             docker tag udaroute:latest $ecrpath
@@ -136,7 +122,6 @@ workflows:
   default:
     jobs:
       - setup-backend
-      - get-ecr-password
       - build-backend:
           requires: [setup-backend]
       # - maven/test:
