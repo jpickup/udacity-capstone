@@ -174,7 +174,7 @@ jobs:
               echo "Deployment already exists, restarting"
             fi
 
-  deploy-frontend:
+  generate-frontend-config:
     docker:
       - image: amazon/aws-cli
     steps:
@@ -197,10 +197,26 @@ jobs:
             echo "  \"VUE_APP_GOOGLE_CLIENT_ID\": \"$google_elevation_api_key\"" >> frontend/public/config.json
             echo "}" >> frontend/public/config.json
             cat frontend/public/config.json
+      - save_cache:
+          paths: [frontend/public/config.json]
+          key: frontend-build
+
+  deploy-frontend:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [frontend-build]   
       - run:
-          name: Deploy frontend to S3 bucket
+          name: Deploy to S3 bucket
           command: |
-            echo Deploy to S3...
+            cat frontend/public/config.json
+            echo "Deploy to S3 bucket..."
+            cd frontend
+            npm install
+            npm run build
+            aws s3 cp dist s3://udaroute --recursive
 
 workflows:
   default:
@@ -210,14 +226,17 @@ workflows:
           requires: [setup-backend]
       - lint-backend:
           requires: [build-backend]
-      - build-frontend
+      - deploy-infrastructure
+      - deploy-backend:
+          requires: [build-backend, deploy-infrastructure]
+      - generate-frontend-config:
+          requires: [deploy-backend]
+      - build-frontend:
+          requires: [generate-frontend-config]
       - lint-frontend:
           requires: [build-frontend]
       - scan-frontend:
           requires: [build-frontend]
-      - deploy-infrastructure
-      - deploy-backend:
-          requires: [build-backend, deploy-infrastructure]
       - deploy-frontend:
-          requires: [build-frontend, deploy-backend]
+          requires: [build-frontend]
 
