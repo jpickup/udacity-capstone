@@ -160,11 +160,34 @@ jobs:
       - checkout
       - run:
           name: Deploy backend to EKS cluster
-          command:
+          command: |
             aws eks update-kubeconfig --region us-east-1 --name udaroute
             kubectl create deployment udaroute-deployment --image=$ecr_home/udaroute:latest
             kubectl apply -f aws/udaroute-deployment.yaml
             kubectl expose deployment udaroute-deployment --type=LoadBalancer --name=udaroute-service
+            export LOAD_BALANCER_IP="$(kubectl get services udaroute-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+            export VUE_APP_ROUTE_SERVER_URI=http://${LOAD_BALANCER_IP}:8081
+            echo "Exposed URL: $VUE_APP_ROUTE_SERVER_URI"
+            echo $VUE_APP_ROUTE_SERVER_URI > backend/server.uri
+      - save_cache:
+          paths: 
+            - backend/server.uri
+          key: backend-build            
+
+  deploy-frontend:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [backend-build, frontend-build]   
+      - run:
+          name: Deploy frontend to S3 bucket
+          command: |
+            cat backend/server.uri
+            echo Deploy to S3...
+    
+
 
 workflows:
   default:
@@ -182,3 +205,6 @@ workflows:
       - deploy-infrastructure
       - deploy-backend:
           requires: [build-backend, deploy-infrastructure]
+      - deploy-frontend:
+          requires: [build-frontend, deploy-backend]
+
