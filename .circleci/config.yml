@@ -88,6 +88,7 @@ jobs:
           name: Test
           command: |
             cd backend
+            mkdir docker
             cat application.properties
             mvn clean test install
             ls -l docker
