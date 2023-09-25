@@ -74,7 +74,8 @@ jobs:
             echo amazon.aws.secretkey=$amazon_aws_secretkey >> application.properties
             cat application.properties
       - save_cache:
-          paths: [backend/application.properties]
+          paths: 
+            - backend/application.properties
           key: backend-build
 
   build-backend:
@@ -87,15 +88,16 @@ jobs:
           name: Test
           command: |
             cd backend
-            cp ~/backend/application.properties .
+            #cp ~/backend/application.properties .
             cat application.properties
             mvn clean test install
+            #mkdir -p ~/backend/docker
+            #cp docker/* ~/backend/docker
       - save_cache:
           paths: 
-            - ~/backend/docker
+            - backend/docker
           key: backend-build
-  
- 
+   
   upload-docker-image:
     docker:
       - image: docker:17.05.0-ce-git
@@ -106,18 +108,17 @@ jobs:
       - run:
           name: Build docker image
           command: |
-            cd backend
+            cd ~/backend
             docker build --tag=udaroute .
       - run:
           name: Upload docker image to ECR
           command: |
-            cd backend
+            cd ~/backend
             echo $ecr_password | docker login --username AWS --password-stdin $ecr_home
             ecrpath=$ecr_home/udaroute:latest
             echo "ERC ID and Image: $ecrpath"
             docker tag udaroute:latest $ecrpath
             docker push $ecrpath
-
 
 workflows:
   default:
