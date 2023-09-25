@@ -130,7 +130,7 @@ workflows:
       #     executor: java17
       #     requires: [setup-backend]
       - upload-docker-image:
-          requires: [build-backend,get-ecr-password]
+          requires: [build-backend]
       - build-frontend
       - lint-frontend:
           requires: [build-frontend]
