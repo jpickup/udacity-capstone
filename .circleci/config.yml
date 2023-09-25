@@ -168,8 +168,7 @@ jobs:
             if [ -z "$existing_deployment" ]
             then
               echo "Creating new deployment"
-              kubectl create deployment udaroute-deployment --image=$ecr_home/udaroute:latest
-              kubectl apply -f aws/udaroute-deployment.yaml
+              kubectl create -f aws/udaroute-deployment.yaml
               kubectl expose deployment udaroute-deployment --type=LoadBalancer --name=udaroute-service --port=8081
             else
               echo "Deployment already exists, restarting"
