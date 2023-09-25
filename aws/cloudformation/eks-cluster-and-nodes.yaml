@@ -305,7 +305,7 @@ Resources:
           HttpPutResponseHopLimit: 2
           HttpTokens: required
         SecurityGroupIds:
-          - !ImportValue '${AWS::StackName}::ClusterSecurityGroupId'
+          - !Ref ClusterSecurityGroupId'
         TagSpecifications:
           - ResourceType: instance
             Tags:
