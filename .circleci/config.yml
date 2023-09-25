@@ -20,7 +20,7 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            echo "Destroying udaroute EKS cluster nodes: udaroute-eks-nodes"
+            # echo "Destroying udaroute EKS cluster nodes: udaroute-eks-nodes"
             #aws cloudformation delete-stack --stack-name udaroute-eks-nodes
             echo "Destroying udaroute EKS cluster stack: udaroute-eks-cluster"
             #aws cloudformation delete-stack --stack-name udaroute-eks-cluster
@@ -147,18 +147,18 @@ jobs:
           no_output_timeout: 20m
           command: |
             aws cloudformation deploy \
-              --template-file aws/cloudformation/eks-cluster.yaml \
+              --template-file aws/cloudformation/eks-cluster-and-nodes.yaml \
               --tags project=udaroute \
               --capabilities CAPABILITY_NAMED_IAM \
               --stack-name udaroute-eks-cluster
-      - run:
-          name: Setup Kubernetes Nodes
-          command: |
-            aws cloudformation deploy \
-              --template-file aws/cloudformation/eks-nodes.yaml \
-              --tags project=udaroute \
-              --capabilities CAPABILITY_NAMED_IAM \
-              --stack-name udaroute-eks-nodes
+      # - run:
+      #     name: Setup Kubernetes Nodes
+      #     command: |
+      #       aws cloudformation deploy \
+      #         --template-file aws/cloudformation/eks-nodes.yaml \
+      #         --tags project=udaroute \
+      #         --capabilities CAPABILITY_NAMED_IAM \
+      #         --stack-name udaroute-eks-nodes
       # Destroy environment on failure
       - destroy-environment:
           workflowId: ${CIRCLE_WORKFLOW_ID:0:7}
