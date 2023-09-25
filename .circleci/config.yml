@@ -88,11 +88,9 @@ jobs:
           name: Test
           command: |
             cd backend
-            #cp ~/backend/application.properties .
             cat application.properties
             mvn clean test install
-            #mkdir -p ~/backend/docker
-            #cp docker/* ~/backend/docker
+            ls -l docker
       - save_cache:
           paths: 
             - backend/docker
@@ -108,12 +106,12 @@ jobs:
       - run:
           name: Build docker image
           command: |
-            cd ~/backend
+            cd backend
             docker build --tag=udaroute .
       - run:
           name: Upload docker image to ECR
           command: |
-            cd ~/backend
+            cd backend
             echo $ecr_password | docker login --username AWS --password-stdin $ecr_home
             ecrpath=$ecr_home/udaroute:latest
             echo "ERC ID and Image: $ecrpath"
@@ -126,11 +124,6 @@ workflows:
       - setup-backend
       - build-backend:
           requires: [setup-backend]
-      # - maven/test:
-      #     command: clean install
-      #     app_src_directory: backend
-      #     executor: java17
-      #     requires: [setup-backend]
       - upload-docker-image:
           requires: [build-backend]
       - build-frontend
