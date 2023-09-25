@@ -173,29 +173,33 @@ jobs:
             else
               echo "Deployment already exists, restarting"
             fi
-            export LOAD_BALANCER_IP="$(kubectl get services udaroute-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
-            export VUE_APP_ROUTE_SERVER_URI=http://${LOAD_BALANCER_IP}:8081
-            echo "Exposed URL: $VUE_APP_ROUTE_SERVER_URI"
-            echo $VUE_APP_ROUTE_SERVER_URI > backend/server.uri
-      - save_cache:
-          paths: 
-            - backend/server.uri
-          key: backend-build            
 
   deploy-frontend:
     docker:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - kubernetes/install-kubectl
       - restore_cache:
           keys: [backend-build, frontend-build]   
       - run:
+          name: Create vue config file
+          command: |
+            export LOAD_BALANCER_IP="$(kubectl get services udaroute-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+            export VUE_APP_ROUTE_SERVER_URI=http://${LOAD_BALANCER_IP}:8081
+            echo "Exposed URL: $VUE_APP_ROUTE_SERVER_URI"
+            echo $VUE_APP_ROUTE_SERVER_URI
+            echo Creating config file
+            echo "{" > frontend/public/config.json
+            echo "\"VUE_APP_ROUTE_SERVER_URI\": \"$VUE_APP_ROUTE_SERVER_URI\"" >> frontend/public/config.json
+            echo "\"VUE_APP_MAPTILER_KEY\": \"$maptiler_key\"" >> frontend/public/config.json
+            echo "\"VUE_APP_GOOGLE_CLIENT_ID\": \"$google_elevation_api_key\"" >> frontend/public/config.json
+            echo "}" >> frontend/public/config.json
+            cat frontend/public/config.json
+      - run:
           name: Deploy frontend to S3 bucket
           command: |
-            cat backend/server.uri
             echo Deploy to S3...
-    
-
 
 workflows:
   default:
