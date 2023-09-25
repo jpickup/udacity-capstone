@@ -94,7 +94,7 @@ jobs:
             ls -l business/docker
       - save_cache:
           paths: 
-            - backend/business/docker
+            - backend/business/docker/*
           key: backend-build
    
   upload-docker-image:
@@ -115,6 +115,7 @@ jobs:
           name: Upload docker image to ECR
           command: |
             cd backend
+            ls -l business/docker
             echo $ecr_password | docker login --username AWS --password-stdin $ecr_home
             ecrpath=$ecr_home/udaroute:latest
             echo "ERC ID and Image: $ecrpath"
