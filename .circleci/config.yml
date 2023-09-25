@@ -82,6 +82,8 @@ jobs:
     executor: java17
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 20.10.14
       - restore_cache:
            keys: [backend-build]      
       - run:
@@ -92,20 +94,6 @@ jobs:
             cat application.properties
             mvn clean test install
             ls -l business/docker
-      - save_cache:
-          paths: 
-            - backend/business/docker/business-0.0.1-SNAPSHOT.jar
-          key: backend-build
-   
-  upload-docker-image:
-    docker:
-      - image: docker:17.05.0-ce-git
-    steps:
-      - checkout
-      - setup_remote_docker:
-          version: 20.10.14
-      - restore_cache:
-          keys: [backend-build]      
       - run:
           name: Build docker image
           command: |
@@ -128,8 +116,6 @@ workflows:
       - setup-backend
       - build-backend:
           requires: [setup-backend]
-      - upload-docker-image:
-          requires: [build-backend]
       - build-frontend
       - lint-frontend:
           requires: [build-frontend]
