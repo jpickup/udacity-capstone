@@ -185,15 +185,16 @@ jobs:
       - run:
           name: Create vue config file
           command: |
+            aws eks update-kubeconfig --region us-east-1 --name udaroute
             export LOAD_BALANCER_IP="$(kubectl get services udaroute-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
             export VUE_APP_ROUTE_SERVER_URI=http://${LOAD_BALANCER_IP}:8081
             echo "Exposed URL: $VUE_APP_ROUTE_SERVER_URI"
             echo $VUE_APP_ROUTE_SERVER_URI
             echo Creating config file
             echo "{" > frontend/public/config.json
-            echo "\"VUE_APP_ROUTE_SERVER_URI\": \"$VUE_APP_ROUTE_SERVER_URI\"" >> frontend/public/config.json
-            echo "\"VUE_APP_MAPTILER_KEY\": \"$maptiler_key\"" >> frontend/public/config.json
-            echo "\"VUE_APP_GOOGLE_CLIENT_ID\": \"$google_elevation_api_key\"" >> frontend/public/config.json
+            echo "  \"VUE_APP_ROUTE_SERVER_URI\": \"$VUE_APP_ROUTE_SERVER_URI\"" >> frontend/public/config.json
+            echo "  \"VUE_APP_MAPTILER_KEY\": \"$maptiler_key\"" >> frontend/public/config.json
+            echo "  \"VUE_APP_GOOGLE_CLIENT_ID\": \"$google_elevation_api_key\"" >> frontend/public/config.json
             echo "}" >> frontend/public/config.json
             cat frontend/public/config.json
       - run:
