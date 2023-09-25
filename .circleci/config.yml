@@ -129,11 +129,13 @@ jobs:
     executor: java17
     steps:
       - checkout
+      - restore_cache:
+           keys: [backend-build]      
       - run:
           name: Checkstyle
           command: |
             cd backend
-            mvn checkstyle:checkstyle
+            mvn compile checkstyle:checkstyle
 
   deploy-infrastructure:
     docker:

@@ -38,7 +38,7 @@ Resources:
           HttpPutResponseHopLimit: 2
           HttpTokens: required
         SecurityGroupIds:
-          - !ImportValue 'eksctl-udaroute-cluster::ClusterSecurityGroupId'
+          - !ImportValue 'udaroute-eks-cluster::ClusterSecurityGroupId'
         TagSpecifications:
           - ResourceType: instance
             Tags:
