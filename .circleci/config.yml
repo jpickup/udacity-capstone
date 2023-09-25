@@ -9,6 +9,24 @@ orbs:
   maven: circleci/maven@1.4.1
   docker: circleci/docker@2.2.0
 
+commands:
+  destroy-environment:
+    description: Destroy back-end cloudformation stacks given a workflow ID.
+    parameters:
+      workflowId:
+        type: string
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            export AWS_DEFAULT_REGION=$aws_default_region
+            echo "Destroying udaroute EKS cluster nodes: udaroute-eks-nodes-<<parameters.workflowId>>
+            aws cloudformation delete-stack --stack-name udaroute-eks-nodes-<<parameters.workflowId>>
+            echo "Destroying udaroute EKS cluster stack: udaroute-eks-cluster--<<parameters.workflowId>>
+            aws cloudformation delete-stack --stack-name udaroute-eks-cluster--<<parameters.workflowId>>
+
+
 jobs:
   build-frontend:
     docker:
@@ -116,6 +134,10 @@ jobs:
       - checkout
       - run: yum install -y tar gzip
       - run:
+          name: Defsault AWS region
+          command:
+            export AWS_DEFAULT_REGION=$aws_default_region
+      - run:
           name: Setup Kubernetes Cluster
           command: |
             aws cloudformation deploy \
@@ -131,7 +153,10 @@ jobs:
               --tags project=udaroute \
               --stack-name udaroute-eks-nodes-${CIRCLE_WORKFLOW_ID:0:7} \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
-
+      # Destroy environment on failure
+      - destroy-environment:
+          workflowId: ${CIRCLE_WORKFLOW_ID:0:7}
+          
 workflows:
   default:
     jobs:
