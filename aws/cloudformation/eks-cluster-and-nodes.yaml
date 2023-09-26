@@ -358,6 +358,7 @@ Resources:
       Tags:
         alpha.eksctl.io/nodegroup-name: udaroute-nodes
         alpha.eksctl.io/nodegroup-type: managed
+    DependsOn: ControlPlane
   NodeInstanceRole:
     Type: 'AWS::IAM::Role'
     Properties:
