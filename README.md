@@ -24,3 +24,16 @@ CircleCI jobs create the infrastructure, compile, test and lint the code and, if
 | backend/domain     | XSDs for GPX, used by JAXB to generate Java classes                        |
 | backend/business   | The springboot application                                                 |
 | frontend           | The Vue.js frontend, built using npm                                       |
+
+### CircleCI Pipeline
+The following jobs run in the CircleCI pipline:
+1. `setup-backend` - extract AWS credentials needed for later jobs
+2. `deploy-infrastructure` - deploy AWS infrastructure defined in CloudFormation
+3. `build-backend` - build the Java backend using MAven
+4. `lint-backend` - scan the Java backend using CheckStyle
+4. `deploy-backend` - build the Docker image for the backend and upload to ECR
+5. `generate-frontend-config` - generate config file for the frontend with the backend connection details
+6. `build-frontend` - build the frontend using NPM
+7. `lint-frontend` - lint the frontend using NPM
+8. `scan-frontend` - scan the frontend using NPM
+9. `deploy-frontend` - deploy the frontend build to an S3 bucket
