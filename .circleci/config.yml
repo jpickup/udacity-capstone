@@ -87,6 +87,7 @@ jobs:
             echo amazon.dynamodb.endpoint=$amazon_dynamodb_endpoint > application.properties
             echo amazon.aws.accesskey=$amazon_aws_accesskey >> application.properties
             echo amazon.aws.secretkey=$amazon_aws_secretkey >> application.properties
+            echo google.elevation.api.url=${google_elevation_api_key}
             cat application.properties
       - save_cache:
           paths: 
@@ -197,7 +198,7 @@ jobs:
             else
               ecrpath=$(cat ~/ecr-path.txt)
               echo "Deployment already exists, updating image to $ecrpath"
-              kubectl set image deployment/udaroute-deployment udaroute-deployment=$ecrpath
+              kubectl set image deployment/udaroute-deployment udaroute=$ecrpath
             fi
 
   generate-frontend-config:
