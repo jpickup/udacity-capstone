@@ -71,6 +71,7 @@ jobs:
             cd frontend
             npm install
             npm run lint
+            npm audit --audit-level=moderate
 
   build-backend:
     executor: java17
