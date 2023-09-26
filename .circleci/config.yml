@@ -97,11 +97,17 @@ jobs:
           command: |
             echo "Updating application.properties file in backend/application.properties"
             cd backend
-            echo amazon.dynamodb.endpoint=$amazon_dynamodb_endpoint > application.properties
+            echo server.port=$server_port > application.properties
+            echo amazon.dynamodb.endpoint=$amazon_dynamodb_endpoint >> application.properties
             echo amazon.aws.accesskey=$amazon_aws_accesskey >> application.properties
             echo amazon.aws.secretkey=$amazon_aws_secretkey >> application.properties
             echo google.elevation.api.key=${google_elevation_api_key} >> application.properties
             echo google.elevation.api.url=${google_elevation_api_url} >> application.properties
+            echo spring.security.oauth2.client.registration.google.clientId=${spring_security_oauth2_client_registration_google_clientId} >> application.properties
+            echo spring.security.oauth2.client.registration.google.clientSecret=${spring_security_oauth2_client_registration_google_clientSecret} >> application.properties
+            echo spring.security.oauth2.client.registration.google.scope=${spring_security_oauth2_client_registration_google_scope} >> application.properties
+            echo spring.security.oauth2.resourceserver.jwt.issuer-uri=${spring_security_oauth2_resourceserver_jwt_issuer_uri} >> application.properties
+            echo spring.security.oauth2.resourceserver.jwt.jwk-set-uri=${spring_security_oauth2_resourceserver_jwt_jwk_set_uri} >> application.properties
             cat application.properties
             cp application.properties business/src/main/resources/
       - run:
