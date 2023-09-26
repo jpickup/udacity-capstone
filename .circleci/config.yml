@@ -214,10 +214,10 @@ jobs:
             echo $VUE_APP_ROUTE_SERVER_URI
             echo Creating config file
             echo "{"                                                              > frontend/public/config.json
-            echo "  \"VUE_APP_ROUTE_SERVER_URI\": \"$VUE_APP_ROUTE_SERVER_URI\"" >> frontend/public/config.json
-            echo "  \"VUE_APP_MAPTILER_KEY\": \"$maptiler_key\""                 >> frontend/public/config.json
-            echo "  \"VUE_APP_GOOGLE_CLIENT_ID\": \"$google_elevation_api_key\"" >> frontend/public/config.json
-            echo "}"                                                             >> frontend/public/config.json
+            echo "  \"VUE_APP_ROUTE_SERVER_URI\": \"$VUE_APP_ROUTE_SERVER_URI\"", >> frontend/public/config.json
+            echo "  \"VUE_APP_MAPTILER_KEY\": \"$maptiler_key\"",                 >> frontend/public/config.json
+            echo "  \"VUE_APP_GOOGLE_CLIENT_ID\": \"$google_elevation_api_key\""  >> frontend/public/config.json
+            echo "}"                                                              >> frontend/public/config.json
             cp frontend/public/config.json ~
       - persist_to_workspace:
           root: ~/
@@ -244,6 +244,7 @@ jobs:
           name: Build with new config
           command: |
             cp ~/config.json frontend/public/config.json
+            cat frontend/public/config.json
             cd frontend
             npm install
             npm run build
