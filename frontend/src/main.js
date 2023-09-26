@@ -15,6 +15,8 @@ fetch(process.env.BASE_URL + "config.json")
   .then((config) => {
     // either use window.config
     window.config = config
+    // deliberate error
+    const unused = 1
     // or use [Vue Global Config][1]
     app.config.globalProperties.config = config
     console.log("Server URI: " + window.config.VUE_APP_ROUTE_SERVER_URI)
