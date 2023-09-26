@@ -71,29 +71,6 @@ jobs:
             npm install
             npm run lint
 
-  setup-backend:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - run: yum install -y tar gzip
-      - restore_cache:
-          keys: [backend-build]      
-      - run: 
-          name: Create updated application.properties file
-          command: |
-            echo "Updating application.properties file in backend/application.properties"
-            cd backend
-            echo amazon.dynamodb.endpoint=$amazon_dynamodb_endpoint > application.properties
-            echo amazon.aws.accesskey=$amazon_aws_accesskey >> application.properties
-            echo amazon.aws.secretkey=$amazon_aws_secretkey >> application.properties
-            echo google.elevation.api.url=${google_elevation_api_key} >> application.properties
-            cat application.properties
-      - save_cache:
-          paths: 
-            - backend/application.properties
-          key: backend-build
-
   build-backend:
     executor: java17
     steps:
@@ -115,12 +92,21 @@ jobs:
             aws ecr get-login-password --region us-east-1 > aws-password.txt
             cat aws-password.txt
       - run:
+          name: Create updated application.properties file
+          command: |
+            echo "Updating application.properties file in backend/application.properties"
+            cd backend
+            echo amazon.dynamodb.endpoint=$amazon_dynamodb_endpoint > application.properties
+            echo amazon.aws.accesskey=$amazon_aws_accesskey >> application.properties
+            echo amazon.aws.secretkey=$amazon_aws_secretkey >> application.properties
+            echo google.elevation.api.url=${google_elevation_api_key} >> application.properties
+            cat application.properties
+            cp application.properties business/src/main/resources/
+      - run:
           name: Compile and Test
           command: |
             cd backend
             mkdir docker
-            cat application.properties
-            cp application.properties business/src/main/resources/
             mvn clean test install
             ls -l business/docker
       - run:
@@ -253,9 +239,7 @@ jobs:
 workflows:
   default:
     jobs:
-      - setup-backend
-      - build-backend:
-          requires: [setup-backend]
+      - build-backend
       - lint-backend:
           requires: [build-backend]
       - deploy-infrastructure
