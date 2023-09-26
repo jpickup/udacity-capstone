@@ -51,3 +51,5 @@ dynamodb_local_latest
 .DS_Store
 
 aws/notes/environment-variables
+backend/business/src/main/resources/application.properties
+backend/business/src/main/resources/application.properties.private

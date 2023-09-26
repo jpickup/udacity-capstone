@@ -195,7 +195,7 @@ jobs:
               kubectl set image deployment/udaroute-deployment udaroute=$ecrpath
             fi
 
-  deploy-frontend-config:
+  generate-frontend-config:
     docker:
       - image: amazon/aws-cli
     steps:
@@ -218,8 +218,12 @@ jobs:
             echo "  \"VUE_APP_MAPTILER_KEY\": \"$maptiler_key\""                 >> frontend/public/config.json
             echo "  \"VUE_APP_GOOGLE_CLIENT_ID\": \"$google_elevation_api_key\"" >> frontend/public/config.json
             echo "}"                                                             >> frontend/public/config.json
-            cat frontend/public/config.json
-            aws s3 cp frontend/public/config.json s3://udaroute
+            cp frontend/public/config.json ~
+      - persist_to_workspace:
+          root: ~/
+          paths: 
+            - config.json
+
 
   deploy-frontend:
     docker:
@@ -228,6 +232,8 @@ jobs:
       - checkout
       - restore_cache:
           keys: [frontend-build]   
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install AWS CLI
           command: |
@@ -235,13 +241,16 @@ jobs:
             unzip awscliv2.zip
             sudo ./aws/install
       - run:
-          name: Deploy to S3 bucket
+          name: Build with new config
           command: |
-            cat frontend/public/config.json
-            echo "Deploy to S3 bucket..."
+            cp ~/config.json frontend/public/config.json
             cd frontend
             npm install
             npm run build
+      - run:
+          name: Deploy to S3 bucket
+          command: |
+            echo "Deploy to S3 bucket..."
             aws s3 cp dist s3://udaroute --recursive
 
 workflows:
@@ -259,7 +268,7 @@ workflows:
       - scan-frontend:
           requires: [build-frontend]
       - deploy-frontend:
-          requires: [build-frontend, lint-frontend, scan-frontend]
-      - deploy-frontend-config:
-          requires: [deploy-backend, deploy-frontend]
+          requires: [build-frontend, lint-frontend, scan-frontend, generate-frontend-config]
+      - generate-frontend-config:
+          requires: [deploy-backend]
 
