@@ -76,6 +76,7 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - run: yum install -y tar gzip
       - restore_cache:
           keys: [backend-build]      
       - run: 
@@ -178,6 +179,7 @@ jobs:
     steps:
       - checkout
       - kubernetes/install-kubectl
+      - run: yum install -y tar gzip
       - restore_cache:
            keys: [backend-build]    
       - run:
@@ -202,6 +204,7 @@ jobs:
     steps:
       - checkout
       - kubernetes/install-kubectl
+      - run: yum install -y tar gzip
       - restore_cache:
           keys: [backend-build, frontend-build]   
       - run:
