@@ -87,17 +87,9 @@ jobs:
             echo amazon.aws.accesskey=$amazon_aws_accesskey >> application.properties
             echo amazon.aws.secretkey=$amazon_aws_secretkey >> application.properties
             cat application.properties
-            aws ecr get-login-password --region us-east-1 > aws-password.txt
-      - run: 
-          name: Get AWS password 
-          command: |
-            cd backend
-            aws ecr get-login-password --region us-east-1 > aws-password.txt
-            cat aws-password.txt
       - save_cache:
           paths: 
             - backend/application.properties
-            - backend/aws-password.txt
           key: backend-build
 
   build-backend:
@@ -106,8 +98,20 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 20.10.14
+      - run:
+          name: Install AWS CLI
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
       - restore_cache:
            keys: [backend-build]      
+      - run: 
+          name: Get AWS password 
+          command: |
+            cd backend
+            aws ecr get-login-password --region us-east-1 > aws-password.txt
+            cat aws-password.txt
       - run:
           name: Compile and Test
           command: |
