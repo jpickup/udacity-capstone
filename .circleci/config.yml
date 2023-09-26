@@ -164,11 +164,12 @@ jobs:
           name: Setup Kubernetes Cluster
           no_output_timeout: 20m
           command: |
-            aws cloudformation deploy \
-              --template-file aws/cloudformation/eks-cluster-and-nodes.yaml \
-              --tags project=udaroute \
-              --capabilities CAPABILITY_NAMED_IAM \
-              --stack-name udaroute-eks-cluster
+            # aws cloudformation deploy \
+            #   --template-file aws/cloudformation/eks-cluster-and-nodes.yaml \
+            #   --tags project=udaroute \
+            #   --capabilities CAPABILITY_NAMED_IAM \
+            #   --stack-name udaroute-eks-cluster
+            echo Disabled for now
       # Destroy environment on failure
       - destroy-environment:
           workflowId: ${CIRCLE_WORKFLOW_ID:0:7}
