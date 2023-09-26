@@ -22,6 +22,7 @@ commands:
           when: on_fail
           command: |
             echo "Destroying udaroute EKS cluster stack: udaroute-eks-cluster"
+            #Disabled for now
             #aws cloudformation delete-stack --stack-name udaroute-eks-cluster
 
 jobs:
@@ -99,7 +100,7 @@ jobs:
             echo amazon.dynamodb.endpoint=$amazon_dynamodb_endpoint > application.properties
             echo amazon.aws.accesskey=$amazon_aws_accesskey >> application.properties
             echo amazon.aws.secretkey=$amazon_aws_secretkey >> application.properties
-            echo google.elevation.api.url=${google_elevation_api_key} >> application.properties
+            echo google.elevation.api.key=${google_elevation_api_key} >> application.properties
             cat application.properties
             cp application.properties business/src/main/resources/
       - run:
