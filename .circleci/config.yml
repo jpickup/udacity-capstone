@@ -195,7 +195,7 @@ jobs:
               kubectl set image deployment/udaroute-deployment udaroute=$ecrpath
             fi
 
-  generate-frontend-config:
+  deploy-frontend-config:
     docker:
       - image: amazon/aws-cli
     steps:
@@ -219,11 +219,11 @@ jobs:
             echo "  \"VUE_APP_GOOGLE_CLIENT_ID\": \"$google_elevation_api_key\""  >> frontend/public/config.json
             echo "}"                                                              >> frontend/public/config.json
             cp frontend/public/config.json ~
+            aws s3 cp frontend/public/config.json s3://udaroute
       - persist_to_workspace:
           root: ~/
           paths: 
             - config.json
-
 
   deploy-frontend:
     docker:
@@ -270,7 +270,7 @@ workflows:
       - scan-frontend:
           requires: [build-frontend]
       - deploy-frontend:
-          requires: [build-frontend, lint-frontend, scan-frontend, generate-frontend-config]
-      - generate-frontend-config:
-          requires: [deploy-backend]
+          requires: [build-frontend, lint-frontend, scan-frontend]
+      - deploy-frontend-config:
+          requires: [deploy-backend, deploy-frontend]
 
