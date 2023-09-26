@@ -87,7 +87,7 @@ jobs:
             echo amazon.dynamodb.endpoint=$amazon_dynamodb_endpoint > application.properties
             echo amazon.aws.accesskey=$amazon_aws_accesskey >> application.properties
             echo amazon.aws.secretkey=$amazon_aws_secretkey >> application.properties
-            echo google.elevation.api.url=${google_elevation_api_key}
+            echo google.elevation.api.url=${google_elevation_api_key} >> application.properties
             cat application.properties
       - save_cache:
           paths: 
@@ -225,9 +225,7 @@ jobs:
             echo "  \"VUE_APP_GOOGLE_CLIENT_ID\": \"$google_elevation_api_key\"" >> frontend/public/config.json
             echo "}"                                                             >> frontend/public/config.json
             cat frontend/public/config.json
-      - save_cache:
-          paths: [frontend/public/config.json]
-          key: frontend-build
+            aws s3 cp frontend/public/config.json s3://udaroute
 
   deploy-frontend:
     docker:
@@ -263,14 +261,13 @@ workflows:
       - deploy-infrastructure
       - deploy-backend:
           requires: [build-backend, deploy-infrastructure]
-      - generate-frontend-config:
-          requires: [deploy-backend]
-      - build-frontend:
-          requires: [generate-frontend-config]
+      - build-frontend
       - lint-frontend:
           requires: [build-frontend]
       - scan-frontend:
           requires: [build-frontend]
       - deploy-frontend:
           requires: [build-frontend]
+      - generate-frontend-config:
+          requires: [deploy-backend, deploy-frontend]
 
