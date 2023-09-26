@@ -251,6 +251,7 @@ jobs:
           name: Deploy to S3 bucket
           command: |
             echo "Deploy to S3 bucket..."
+            cd frontend
             aws s3 cp dist s3://udaroute --recursive
 
 workflows:
