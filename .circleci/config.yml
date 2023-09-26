@@ -73,7 +73,7 @@ jobs:
 
   setup-backend:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: amazon/aws-cli
     steps:
       - checkout
       - restore_cache:
@@ -87,9 +87,11 @@ jobs:
             echo amazon.aws.accesskey=$amazon_aws_accesskey >> application.properties
             echo amazon.aws.secretkey=$amazon_aws_secretkey >> application.properties
             cat application.properties
+            aws ecr get-login-password --region us-east-1 > aws-password.txt
       - save_cache:
           paths: 
             - backend/application.properties
+            - backend/aws-password.txt
           key: backend-build
 
   build-backend:
@@ -118,7 +120,7 @@ jobs:
           command: |
             cd backend
             ls -l business/docker
-            echo $ecr_password | docker login --username AWS --password-stdin $ecr_home
+            cat aws-password.txt | docker login --username AWS --password-stdin $ecr_home
             ecrpath=$ecr_home/udaroute:${CIRCLE_BUILD_NUM}
             echo "ERC ID and Image: $ecrpath"
             docker tag udaroute:${CIRCLE_BUILD_NUM} $ecrpath
