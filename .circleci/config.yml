@@ -140,14 +140,14 @@ jobs:
       - save_cache:
           paths: 
             - backend/ecr-path.txt
-          key: backend-build
+          key: docker-build
 
   lint-backend:
     executor: java17
     steps:
       - checkout
       - restore_cache:
-           keys: [backend-build]      
+           keys: [docker-build]      
       - run:
           name: Checkstyle
           command: |
