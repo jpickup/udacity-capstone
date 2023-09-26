@@ -246,14 +246,14 @@ workflows:
           requires: [build-backend]
       - deploy-infrastructure
       - deploy-backend:
-          requires: [build-backend, deploy-infrastructure]
+          requires: [build-backend, lint-backend, deploy-infrastructure]
       - build-frontend
       - lint-frontend:
           requires: [build-frontend]
       - scan-frontend:
           requires: [build-frontend]
       - deploy-frontend:
-          requires: [build-frontend]
+          requires: [build-frontend, lint-frontend, scan-frontend]
       - deploy-frontend-config:
           requires: [deploy-backend, deploy-frontend]
 

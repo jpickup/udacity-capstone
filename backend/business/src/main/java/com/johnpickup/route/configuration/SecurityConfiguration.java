@@ -23,9 +23,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .antMatchers(HttpMethod.POST, "/**").fullyAuthenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .oauth2ResourceServer().jwt()
-                .and()
+//                .and()
+//                .oauth2ResourceServer().jwt()
+//                .and()
                 .and().cors()
                 .and().csrf().disable();
     }
