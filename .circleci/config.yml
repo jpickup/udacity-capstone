@@ -137,11 +137,11 @@ jobs:
             echo "ERC ID and Image: $ecrpath"
             docker tag udaroute:${CIRCLE_BUILD_NUM} $ecrpath
             docker push $ecrpath
-            echo $ecrpath > ecr-path.txt
-      - save_cache:
+            echo $ecrpath > ~/ecr-path.txt
+      - persist_to_workspace:
+          root: ~/
           paths: 
-            - backend/ecr-path.txt
-          key: docker-build
+            - ecr-path.txt
 
   lint-backend:
     executor: java17
@@ -180,8 +180,8 @@ jobs:
       - checkout
       - kubernetes/install-kubectl
       - run: yum install -y tar gzip
-      - restore_cache:
-           keys: [backend-build]    
+      - attach_workspace:
+          at: ~/
       - run:
           name: Deploy backend to EKS cluster
           command: |
@@ -193,7 +193,7 @@ jobs:
               kubectl create -f aws/kubernetes/udaroute-deployment.yaml
               kubectl expose deployment udaroute-deployment --type=LoadBalancer --name=udaroute-service --port=8081
             else
-              ecrpath=$(cat ecr-path.txt)
+              ecrpath=$(cat ~/ecr-path.txt)
               echo "Deployment already exists, updating image to $ecrpath"
               kubectl set image deployment/udaroute-deployment udaroute-deployment=$ecrpath
             fi
