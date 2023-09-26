@@ -1,0 +1,9 @@
+Github repo:
+https://github.com/jpickup/udacity-capstone
+
+ECR image repo:
+073796236635.dkr.ecr.us-east-1.amazonaws.com/udaroute
+
+CircleCI:
+https://app.circleci.com/pipelines/github/jpickup/udacity-capstone
+
