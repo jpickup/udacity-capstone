@@ -124,7 +124,7 @@ jobs:
           name: Build docker image
           command: |
             cd backend
-            docker build --tag=udaroute .
+            docker build --tag=udaroute:${CIRCLE_BUILD_NUM} .
       - run:
           name: Upload docker image to ECR
           command: |
