@@ -88,6 +88,12 @@ jobs:
             echo amazon.aws.secretkey=$amazon_aws_secretkey >> application.properties
             cat application.properties
             aws ecr get-login-password --region us-east-1 > aws-password.txt
+      - run: 
+          name: Get AWS password 
+          command: |
+            cd backend
+            aws ecr get-login-password --region us-east-1 > aws-password.txt
+            cat aws-password.txt
       - save_cache:
           paths: 
             - backend/application.properties
@@ -119,6 +125,7 @@ jobs:
           name: Upload docker image to ECR
           command: |
             cd backend
+            cat aws-password.txt
             ls -l business/docker
             cat aws-password.txt | docker login --username AWS --password-stdin $ecr_home
             ecrpath=$ecr_home/udaroute:${CIRCLE_BUILD_NUM}
