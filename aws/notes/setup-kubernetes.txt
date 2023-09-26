@@ -24,7 +24,7 @@ eksctl create cluster \
 # this automatically updates a local config file so that kubectl talks to this cluster
 
 # create a pod with an image
-kubectl create deployment udaroute-deployment --image=073796236635.dkr.ecr.us-east-1.amazonaws.com/udaroute:latest
+kubectl create deployment udaroute-deployment --image=073796236635.dkr.ecr.us-east-1.amazonaws.com/udaroute:389
 
 # show pods (gets the full name with hash)
 kubectl get pod

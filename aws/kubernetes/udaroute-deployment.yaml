@@ -15,7 +15,7 @@ spec:
         app.kubernetes.io/name: udaroute-deployment
     spec:
       containers:
-      - image: 073796236635.dkr.ecr.us-east-1.amazonaws.com/udaroute:latest
+      - image: 073796236635.dkr.ecr.us-east-1.amazonaws.com/udaroute:389
         name: udaroute-deployment
         imagePullPolicy: "Always"
         ports:

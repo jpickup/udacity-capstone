@@ -119,6 +119,7 @@ jobs:
             cd backend
             mkdir docker
             cat application.properties
+            cp application.properties business/src/main/resources/
             mvn clean test install
             ls -l business/docker
       - run:
