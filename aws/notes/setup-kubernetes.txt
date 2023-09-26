@@ -44,7 +44,7 @@ kubectl exec -it udaroute-deployment-5b86776fc6-pm7n7 -- bin/bash
 
 # Need to create both a deployment and a service - this is a different yaml file
 # actually, don't do this, use the expose instead (below)
-kubectl apply -f ../aws/udaroute-k8s-service.yaml
+kubectl apply -f ../aws/kubernetes/udaroute-k8s-service.yaml
 
 
 

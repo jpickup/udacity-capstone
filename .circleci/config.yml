@@ -119,9 +119,9 @@ jobs:
             cd backend
             ls -l business/docker
             echo $ecr_password | docker login --username AWS --password-stdin $ecr_home
-            ecrpath=$ecr_home/udaroute:latest
+            ecrpath=$ecr_home/udaroute:${CIRCLE_BUILD_NUM}
             echo "ERC ID and Image: $ecrpath"
-            docker tag udaroute:latest $ecrpath
+            docker tag udaroute:${CIRCLE_BUILD_NUM} $ecrpath
             docker push $ecrpath
 
   lint-backend:
@@ -168,10 +168,11 @@ jobs:
             if [ -z "$existing_deployment" ]
             then
               echo "Creating new deployment"
-              kubectl create -f aws/udaroute-deployment.yaml
+              kubectl create -f aws/kubernetes/udaroute-deployment.yaml
               kubectl expose deployment udaroute-deployment --type=LoadBalancer --name=udaroute-service --port=8081
             else
-              echo "Deployment already exists, restarting"
+              echo "Deployment already exists, updating image to $ecr_home/udaroute:${CIRCLE_BUILD_NUM}"
+              kubectl set image deployment/udaroute-deployment mycontainer=$ecr_home/udaroute:${CIRCLE_BUILD_NUM}
             fi
 
   generate-frontend-config:
@@ -191,11 +192,11 @@ jobs:
             echo "Exposed URL: $VUE_APP_ROUTE_SERVER_URI"
             echo $VUE_APP_ROUTE_SERVER_URI
             echo Creating config file
-            echo "{" > frontend/public/config.json
+            echo "{"                                                              > frontend/public/config.json
             echo "  \"VUE_APP_ROUTE_SERVER_URI\": \"$VUE_APP_ROUTE_SERVER_URI\"" >> frontend/public/config.json
-            echo "  \"VUE_APP_MAPTILER_KEY\": \"$maptiler_key\"" >> frontend/public/config.json
+            echo "  \"VUE_APP_MAPTILER_KEY\": \"$maptiler_key\""                 >> frontend/public/config.json
             echo "  \"VUE_APP_GOOGLE_CLIENT_ID\": \"$google_elevation_api_key\"" >> frontend/public/config.json
-            echo "}" >> frontend/public/config.json
+            echo "}"                                                             >> frontend/public/config.json
             cat frontend/public/config.json
       - save_cache:
           paths: [frontend/public/config.json]

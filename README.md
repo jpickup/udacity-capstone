@@ -14,12 +14,12 @@ Storage is in three DynamoDB tables for the routes, route ratings and users.
 CircleCI jobs create the infrastructure, compile, test and lint the code and, if successful perform a rolling deployment onto the AWS infrastructure.
 
 
-### Files in this repo
+### Important files and directories in this repo
 | File               | Description                                                                |
 | ------------------ | -------------------------------------------------------------------------- |
-| README.md          | This file                                                                  |
-| aws                | Scripts for cloud 
+| aws                | Scripts for setup of objects in AWS                                        |
 | aws/cloudformation | Cloudformation templates for the AWS resources                             |
+| aws/kubernetes     | Kubernetes scripts                                                         |
 | backend            | The Java backend, built using maven                                        |
 | backend/domain     | XSDs for GPX, used by JAXB to generate Java classes                        |
 | backend/business   | The springboot application                                                 |

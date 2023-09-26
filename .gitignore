@@ -50,3 +50,4 @@ dynamodb_local_latest
 
 .DS_Store
 
+aws/notes/environment-variables
