@@ -31,8 +31,8 @@ The following jobs run in the CircleCI pipline:
 2. `build-backend` - build the Java backend using MAven
 3. `lint-backend` - scan the Java backend using CheckStyle
 4. `deploy-backend` - build the Docker image for the backend and upload to ECR
-5. `generate-frontend-config` - generate config file for the frontend with the backend connection details
-6. `build-frontend` - build the frontend using NPM
-7. `lint-frontend` - lint the frontend using NPM
-8. `scan-frontend` - scan the frontend using NPM
-9. `deploy-frontend` - deploy the frontend build to an S3 bucket
+5. `build-frontend` - build the frontend using NPM
+6. `lint-frontend` - lint the frontend using NPM
+7. `scan-frontend` - scan the frontend using NPM
+8. `deploy-frontend` - deploy the frontend build to an S3 bucket
+9. `deploy-frontend-config` - generate config file for the frontend with the backend connection details and upload to S3 bucket

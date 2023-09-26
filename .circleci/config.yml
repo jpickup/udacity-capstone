@@ -101,6 +101,7 @@ jobs:
             echo amazon.aws.accesskey=$amazon_aws_accesskey >> application.properties
             echo amazon.aws.secretkey=$amazon_aws_secretkey >> application.properties
             echo google.elevation.api.key=${google_elevation_api_key} >> application.properties
+            echo google.elevation.api.url=${google_elevation_api_url} >> application.properties
             cat application.properties
             cp application.properties business/src/main/resources/
       - run:
@@ -188,7 +189,7 @@ jobs:
               kubectl set image deployment/udaroute-deployment udaroute=$ecrpath
             fi
 
-  generate-frontend-config:
+  deploy-frontend-config:
     docker:
       - image: amazon/aws-cli
     steps:
@@ -253,6 +254,6 @@ workflows:
           requires: [build-frontend]
       - deploy-frontend:
           requires: [build-frontend]
-      - generate-frontend-config:
+      - deploy-frontend-config:
           requires: [deploy-backend, deploy-frontend]
 
